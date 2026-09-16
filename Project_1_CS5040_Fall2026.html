@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="Description" content="CS 5040 Project 1 ">
+<title>Project 1 for CS 5040 / Fall 2026</title>
+
+<style type="text/css">
+      code { color: #284; }
+      div.code { padding: 1em; padding-top: 0; border: groove; border-radius: 8px; }
+      .notice { color: #f00; }
+      a { color: #284; }
+      .heading { color:  #A52A2A; font-variant: small-caps; text-align: center; }
+      .heading .l1 { font-size: 3.5em; }
+      .heading .l2 { font-size: 2.5em; }
+      .body { font-size: 1.5em; }
+      .section { font-weight: bold; font-variant: small-caps; }
+      .unspec { font-style: italic; }
+      .name { font-style: italic; }
+      .emph { font-weight: bold; }
+      .alert { color: #f00; }
+      h3 { color: #A52A2A; font-variant: small-caps; }
+      table.a { width: 100%; border-collapse: collapse; border: thin solid; }
+      table.a td { border-right: thin solid; text-align: center; }
+      table.a tr:nth-child(even) { border-top: thin solid; }
+      table.a tr:nth-child(odd) { background-color: rgba(0,0,0,0.05); }
+      table i { color: #284; }
+      table.b { border-collapse: collapse;
+          border-top: thin solid; border-bottom: thin solid; }
+      table.b th { border-bottom: thin solid;
+          padding-right: 2em; padding-left: 2em; text-align: center; }
+      table.b td { text-align: center; padding-right: 2em; padding-left: 2em; }
+      table.b tr.w { border-top: thin solid; }
+      table.b tr:nth-child(odd) { background-color: rgba(0,0,0,0.05); }
+      table.c { border: none; }
+      table.c th { padding-left: 2em; text-align: left; font-weight: bold; }
+      table.c td { padding-left: 2em; text-align: left; }
+</style>
+</head>
+
+<body>
+<div class="heading">
+  <span class="l1">CS 5040: Intermediate Data Structures and Algorithms</span><br>
+  <span class="l2">Project 1</span><br>
+  <span class="l2">due Wednesday, September 23 at 11:59 PM</span><br>
+  <p>
+</div>
+
+<div class="body">
+<hr>
+<div class="summary">The objective of this project is to build, repair, test, and empirically analyze an infinite-precision arithmetic package built on linear data structures. Correct output is necessary but is only a small part of your grade. Most of the points are awarded for work that requires you to understand the code you submit: locating defects in a provided implementation, designing tests that expose defects in implementations you cannot see, measuring the cost of your own algorithms, and explaining your design.</div>
+<hr><p>
+
+<span class="section">Overview:</span><p>
+
+In most programming languages, integer values are of a fixed size, e.g., 32 bits in C++, 64 bits in Java. 32 bits will allow integers of approximately 10 decimal digits. For most purposes this is sufficient, but when it is not, infinite precision integer arithmetic can be implemented in software. For this project you will complete a "BigNumArithmetic" or infinite precision arithmetic package for non-negative integers.
+
+<p>
+The program will be invoked from the command-line as:
+<p>
+<code>%&gt; java BigNumArithmetic &lt;input-file&gt;</code>
+<p>
+where:
+<ul>
+<li><code>BigNumArithmetic</code> is the name of the program. The file where you have your <code>main()</code> method must be called <code>BigNumArithmetic.java</code>
+<li><code>input-file</code> is the name of the text input file to be read.
+</ul>
+
+Your program will read, from the input-file, a series of expressions with one expression per line. The program should terminate after reading the end of the file.
+<p>
+All expressions are in <a href="https://en.wikipedia.org/wiki/Reverse_Polish_notation">Reverse Polish Notation (RPN)</a> (postfix expression). In RPN, the operands come before the operator. For example, you normally see multiplication written as <code>(a * b)</code>. In RPN, this expression would appear as <code>(a b *)</code>. For expressions with more than one operator, each time an operator is encountered, it operates on the two immediately preceding sub-expressions. Thus <code>(a + b * c)</code> is <code>(a b c * +)</code> and <code>((a + b) * c)</code> is <code>(a b + c *)</code>. In RPN there is no operator precedence; operators are evaluated left to right.
+<p>
+Input operands consist of a string of digits and may be of any length. You should trim off any excess zeros at the beginning of an operand. Expressions may also be of any length. Spaces may appear within the expression arbitrarily, with the rule that a space terminates an operand and a line break terminates an expression. The operations to be supported are addition <code>(+)</code>, multiplication <code>(*)</code>, and exponentiation <code>(^)</code>. Your program must not break if the number of operators and operands do not match correctly. When an error is detected, processing stops on the current expression and your program proceeds to the next expression.
+<p>
+For each expression, echo the input as it is read to stdout, followed by the result of the operation, or a blank space for an error, as appropriate. Given <code>2 8 + 2 ^</code> you print:
+<p>
+<code>2 8 + 2 ^ = 100</code>
+<p>
+If an error is detected, e.g. <code>2 8 + 2</code>, print:
+<p>
+<code>2 8 + 2 =</code>
+
+<p><p>
+<span class="section">What Is Different About This Project</span>
+<p>
+Generative AI tools can produce a working BigNumArithmetic from a specification in seconds. That is a fact about the world, and pretending otherwise would waste your time and mine. This project is therefore graded on the things that still require you to understand linear data structures and algorithm cost:
+
+<ul>
+<li>You start from a <span class="emph">provided implementation that is deliberately defective</span>, and you must find, diagnose, and repair the defects. You cannot diagnose code you have not read.
+<li>You write a test suite that is scored by <span class="emph">how many hidden faulty implementations it detects</span>. Nobody, human or machine, can see those implementations, so effective tests can only come from reasoning about how digit-list arithmetic fails.
+<li>You <span class="emph">instrument and measure your own code</span> and defend the numbers you report. The grading harness re-runs your instrumentation, so reported numbers that your code cannot actually produce score zero.
+<li>You <span class="emph">explain your submitted code in a ten-minute walkthrough</span>. This is a gate on the rest of your grade.
+</ul>
+
+<p>
+<span class="section">AI Use Policy</span>
+<p>
+You may use university approved generative AI tools (https://ai.vt.edu/tools.html) on this project. You must submit <code>AI_USE.md</code> describing which tools you used, what you asked them, and what you changed in what they gave you. Declared use is not penalized in any way. <span class="notice">Undeclared use is an Honor Code violation.</span> Submitting code you cannot explain in Part E will cost you far more points than any tool can earn you.
+
+<p><p>
+<span class="section">Design Considerations</span>
+<p>
+RPN can be implemented using a stack. As the expression is read in, operands are placed on the stack. Whenever an operator is read, the required operands are removed from the stack, the operation is performed, and the result is placed back onto the stack. You may assume the stack never holds more than 100 operands.
+<p>
+Integers are represented by a <span class="emph">linked list of digits, one digit per list node</span>. You must maintain a linked list of nodes as discussed in class and allocate new nodes with the <code>new</code> operator as needed. You will likely find that operations are easier to perform if the list is stored low order to high order.
+<p>
+<b>Example:</b> the integer 436 may be represented as 6 -&gt; 3 -&gt; 4. Results must be printed in the correct order, so convert between representations as appropriate.
+<p>
+Addition is performed by starting at the low order digits and adding each pair as you move toward the high order digits, carrying whenever a digit sum reaches ten.
+<p>
+Multiplication is performed as you learned in elementary school. The low order digit of the second operand is multiplied against the entire first operand; the next digit is multiplied against the first operand with a shift; each partial result is added to the running total.
+<p>
+Exponentiation must use exponentiation by squaring, which exploits the observation that for a positive integer <i>n</i>:
+<p>
+<code>
+x<sup>n</sup> = x &middot; (x<sup>2</sup>)<sup>(n-1)/2</sup>, if n is odd<br>
+x<sup>n</sup> = (x<sup>2</sup>)<sup>n/2</sup>, if n is even
+</code>
+<p>
+Repeated multiplication is not acceptable, and Part C will make the difference visible in your own measurements. Addition, multiplication, and exponentiation may be implemented iteratively or recursively, as you prefer.
+
+<p><p>
+<span class="section">Part A: Defect Repair (15 pts)</span>
+<p>
+Download <code>bignum-defective.zip</code> from Canvas. It contains a complete BigNumArithmetic that compiles, runs, and produces correct output on the sample input. It also contains <span class="emph">six seeded defects</span>. Some are correctness defects that appear only on particular inputs; at least one is a performance defect that produces correct answers at asymptotically worse cost than the specification requires.
+<p>
+Deliverable: <code>DEFECTS.md</code>, using the template provided, with one entry per defect containing
+<ol>
+<li>the symptom, described as an observable behavior;
+<li>a <span class="emph">minimal failing input</span>, meaning that no shorter or simpler input in the same family exposes the defect;
+<li>the root cause, identified by file, method, and line, and explained in terms of the data structure invariant that is violated;
+<li>your fix, and why you chose it over alternatives;
+<li>a regression test that fails before the fix and passes after it.
+</ol>
+<p>
+Scoring: 2 points per defect for a correct root cause plus a locking test, 1 point for a correct fix with no correct root cause, 0 for a reported defect that is not actually in the code. The remaining 3 points are for the quality of your minimal inputs across the whole report.
+<p>
+Here is the category list. There is exactly one defect in each, and no defects outside them:
+<ol>
+<li>exponentiation control flow
+<li>linked list equality
+<li>the size invariant after a list is truncated
+<li>access to the top of the stack
+<li>input tokenization
+<li>asymptotic cost of a list operation used inside a loop
+</ol>
+<p>
+Three of the six produce no visible symptom when you run <code>BigNumArithmetic</code> on any input at all. You will not find those by running the program. Read the code, write unit tests against <code>LinkedList</code>, <code>LinkedNode</code>, and <code>Stack</code> directly, and check the class invariants documented at the top of <code>LinkedList.java</code> against what the methods actually do. One of the six produces correct output on every input and is detectable only by measurement.
+
+<p><p>
+<span class="section">Part B: Adversarial Test Suite (15 pts)</span>
+<p>
+Submit <code>BigNumTest.java</code>, a JUnit suite that tests the public API of your package. Your suite is run against <span class="emph">twelve hidden mutant implementations</span> plus one correct reference implementation.
+<p>
+Your score is computed as follows.
+<ul>
+<li>+1.5 points for each mutant your suite detects, meaning at least one of your tests fails on that mutant. Capped at 15.
+<li>&minus;3 points if any of your tests fails on the correct reference implementation. A test suite that rejects correct code is worse than no test suite.
+<li>0 points for the part if your suite does not compile against the published API, or if any single test runs longer than 10 seconds.
+</ul>
+<p>
+The mutants are drawn from these families, one or two per family: carry propagation and carry-out when a result grows in length, zero and identity operands, single-digit versus multi-digit boundary cases, operand length asymmetry in multiplication, exponent parity in exponentiation by squaring, high-order zero normalization, malformed expression recovery, and aliasing between operands (computing <code>x x *</code> where both arguments are the same object).
+<p>
+Assertions on printed output alone will detect few mutants. The strongest suites test the data structure invariants directly.
+
+<p><p>
+<span class="section">Part C : Empirical Cost Study (15 pts)</span>
+<p>
+This is the largest single component of the project and it is where the algorithm analysis content of the course is assessed.
+<p>
+<span class="emph">Instrumentation.</span> Your implementation must maintain counters, exposed through the starter code <code>OpCounter</code> interface, for
+<ul>
+<li>single-digit additions,
+<li>single-digit multiplications,
+<li>node allocations,
+<li>node traversals (pointer dereferences moving through a list).
+</ul>
+The counters must be incremented in the arithmetic code itself, not estimated afterward. <span class="notice">The grading harness re-runs your program on inputs you have not seen and compares the counter values your code emits against the numbers in your report.</span> Reported numbers your code cannot reproduce score zero for the affected section.
+<p>
+<span class="emph">Analysis.</span> In <code>ANALYSIS.pdf</code>, no more than four pages:
+<ol>
+<li>Measure. Run the provided generator to produce operands of 25, 100, 400, 1600, and 3000 digits, and exponents 2<sup>1</sup> through 2<sup>12</sup>. Record counter values and wall-clock time, five trials each. Submit raw data as <code>measurements.csv</code>. Do not exceed 3000 digits until you have dealt with item 6 below.
+</ol>
+<p>
+
+<p><p>
+<span class="section">Part D : Functional Correctness (25 pts)</span>
+<p>
+Submission via Web-CAT. You must pass the smoke tests to receive any credit for Parts A through C; a submission that does not compile or does not run on the sample input scores zero for the project.
+<p>
+<code>BignumInput.txt</code> and <code>BignumOutput.txt</code> ship with the starter code. Note that the starter <span class="emph">already reproduces the sample output exactly</span>, defects and all. Matching the sample is your floor, not your goal.
+
+<p><p>
+<span class="section">Part E : Video Walkthrough (20 pts)</span>
+<p>
+A ten-minute prerecorded screen capture in which you explain the main functionalities of the program you implemented and how you applied efficient coding.  Prepare as much as you like; preparing for them means understanding your own submission, which is the point.
+<p>
+<span class="emph">Format.</span>
+<ul>
+<li>Ten minutes maximum. 
+<li>One continuous take. No cuts, no edits, no title cards.
+<li>Your screen visible throughout, showing your code and your terminal. 
+<li>Say your name and PID in the first ten seconds.
+
+</ul>
+<p>
+
+<span class="emph"> Main functionalities</span>: Explain each of the following with the relevant code on screen, running at least two of them live on a small example of your choosing:
+<ol>
+<li><span class="emph">Number representation</span>
+<li><span class="emph">RPN evaluation</span> 
+<li><span class="emph">Addition</span>  
+<li><span class="emph">Multiplication</span> 
+<li><span class="emph">Exponentiation by squaring</span> 
+<li><span class="emph">Error handling</span> 
+</ol>
+<p>
+<span class="emph"> Efficient coding</span> :  This section carries the most weight. Cover all three:
+<ol>
+<li><span class="emph">State the cost of each operation (Big-O)</span> &mdash; addition, multiplication, and exponentiation, in terms of the operand digit lengths and the exponent. 
+<li><span class="emph">Show two specific efficiency decisions in your code</span> 
+<li><span class="emph">Show one measurement on screen</span>: run the same operation at two input sizes, show your operation counters or timings, and say whether the growth matches what you predicted.
+</ol>
+<p>
+
+<span class="emph">Scoring.</span> Full marks within a section for a correct explanation in your own words, at a steady pace, with the relevant code on screen and pointed at. Half marks for correct but read rather than explained, or described in general terms without reference to your actual code, or missing the required evidence. Zero for absent, or contradicted by the code on screen. Fluency here means fluency about your code, not about English.
+<p>
+
+
+<p><p>
+<span class="section">Rules</span>
+<ol>
+<li><span class="notice">This project is an individual effort; the Honor Code applies.</span>
+<li>You may import <code>java.util.Stack</code>. You may import JUnit in your test file. No other <code>java.util</code> imports are permitted, in particular not <code>ArrayList</code> or <code>LinkedList</code>.
+<li>All data fields must be declared <code>private</code> or <code>protected</code>.
+<li>You may add your own helper methods or data fields, but they must be <code>private</code> or <code>protected</code>. You may add public constructors.
+<li>Your <code>LinkedList</code> and <code>Node</code> classes must be generic.
+<li>Use JavaDoc-style comments with <code>@param</code> and <code>@return</code> tags wherever the meaning is not obvious. Code style is checked automatically.
+<li>The honor code pledge (click <a href="https://people.cs.vt.edu/mengistu/Courses/FA22/HonorCode_Pledge">here</a>) must appear in the file containing <code>main</code>.
+<li>Submit a Git repository with commit history. A single commit containing the entire project will forfeit the milestone points in the table below.
+<li><span class="notice">Late submission policy is applied according to the syllabus.</span>
+<li><span class="notice">Extra credit is given for early submission of Part D (2 pts per day, up to 10 pts).</span>
+<li><span class="notice">Starting the project as early as possible is strongly recommended.</span> Parts A, B, and C cannot be done in a weekend.
+</ol>
+
+<p>
+<span class="section">Design Criteria (10 pts)</span>
+<p>
+Included in the 100 points above. The following will negatively affect this component:
+<ul>
+<li>Inefficient code in the <code>LinkedList</code> structure.
+<li>Non-generic <code>LinkedList</code> and <code>Node</code> classes.
+<li>Significant redundant code that could have been generalized (for example, near copy-pasted blocks).
+<li>Inappropriate object-oriented technique: unnecessarily complex or constrained methods and classes, 80% or more of the code in a single class, or very large methods.
+<li>Input parsing, expression processing, and the linked list not decoupled into separate classes and files.
+<li>Instrumentation counters woven into the arithmetic so intrusively that the arithmetic becomes unreadable, or maintained so loosely that they are not exact.
+<li>Any forbidden library import.
+</ul>
+
+
+<p><p>
+<span class="section">Handling a Multi-Week Project using Milestones</span>
+<p>
+This project is designed so that the milestones correspond with each set of lectures. You are unlikely to complete it in one weekend. Milestone points count toward your total.
+<ul>
+<li><b>Milestone #1</b> [due Sept 15] A successful Web-CAT submission with a <code>main</code> and at least one test case. <b>(2 pts)</b>
+<li><b>Milestone #2</b> [due Sept 18] <code>DEFECTS.md</code> with three of the six defects fully documented, including minimal inputs. Submitted via Canvas. Name your folder Milestone2 <b>(4 pts)</b>
+<li><b>Milestone #3</b> [due Sept 23] Full submission. 
+</ul>
+
+<p>
+<span class="section">Starter Materials</span>
+<ul>
+<li><code>bignum-defective.zip</code>- the provided implementation containing the six seeded defects, plus <code>BignumInput.txt</code> and <code>BignumOutput.txt</code>
+<li><code>OpCounter.java</code> - the instrumentation interface your code must implement
+<li><code>DEFECTS_template.md</code>, <code>AI_USE_template.md</code>. BOth Web-CAT and Canvas. 
+
+</ul>
+
+<p>
+<span class="section">Project Specification Update:</span>
+<ul>
+<li>None (as of 09/11)
+</ul>
+
+</div>
+</body>
+</html>

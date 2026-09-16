@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="bignum-defective">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/bignum-defective.zip!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
