@@ -16,7 +16,7 @@ public class LinkedList<T> {
     private LinkedNode<T> tail;
     private int size;
 
-    /**
+    /** Good
      * Create an empty list.
      */
     public LinkedList() {
@@ -24,7 +24,7 @@ public class LinkedList<T> {
     }
 
 
-    /**
+    /** Good
      * Create a list whose only node is the one given.
      *
      * @param head
@@ -37,7 +37,7 @@ public class LinkedList<T> {
     }
 
 
-    /**
+    /** Good
      * @return the first node of the list, or null if empty
      */
     public LinkedNode<T> getHead() {
@@ -45,7 +45,7 @@ public class LinkedList<T> {
     }
 
 
-    /**
+    /** Good
      * @return the last node of the list, or null if empty
      */
     public LinkedNode<T> getTail() {
@@ -53,7 +53,7 @@ public class LinkedList<T> {
     }
 
 
-    /**
+    /** TODO: add on tail directly, or else it's O(n)
      * Append a node to the end of the list.
      *
      * @param node
