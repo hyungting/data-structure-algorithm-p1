@@ -53,7 +53,7 @@ public class LinkedList<T> {
     }
 
 
-    /** TODO: add on tail directly, or else it's O(n)
+    /** TODO: add on tail directly, don't start with head.
      * Append a node to the end of the list.
      *
      * @param node
@@ -67,6 +67,7 @@ public class LinkedList<T> {
             LinkedNode<T> current = this.head;
             while (current.getNext() != null) {
                 current = current.getNext();
+                OpCounter.traverse();
             }
 
             current.setNext(node);
@@ -88,7 +89,7 @@ public class LinkedList<T> {
     }
 
 
-    /**
+    /** Good
      * Insert a value at the front of the list.
      *
      * @param el
@@ -127,7 +128,7 @@ public class LinkedList<T> {
     }
 
 
-    /**
+    /** TODO: remove while loop, add size adjustment
      * Discard every node after the given node, which must belong to this list.
      *
      * @param node
@@ -141,6 +142,7 @@ public class LinkedList<T> {
         LinkedNode<T> current = node.getNext();
         while (current != null) {
             current = current.getNext();
+            OpCounter.traverse();
         }
 
         node.setNext(null);
@@ -148,7 +150,7 @@ public class LinkedList<T> {
     }
 
 
-    /**
+    /** Good
      * Remove the node at the given index.
      *
      * @param index
@@ -188,7 +190,7 @@ public class LinkedList<T> {
     }
 
 
-    /**
+    /** Good
      * @param index
      *            zero-based position of the node to fetch
      * @return the node at that position
@@ -211,14 +213,14 @@ public class LinkedList<T> {
     }
 
 
-    /**
+    /** Good
      * @return the number of nodes in the list
      */
     public int getSize() {
         return this.size;
     }
 
-
+    /** TODO: add length comparison first*/
     @Override
     public boolean equals(Object other) {
         if (other == null) {

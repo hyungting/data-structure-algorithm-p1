@@ -13,28 +13,28 @@
 - [x] 確認 starter code 可編譯：`javac -d bin src/*.java`。
 - [x] 執行 sample：`java -cp bin BigNumArithmetic BignumInput.txt`。
 - [x] 與 `BignumOutput.txt` 比較，確認 starter sample 輸出一致。
-- [ ] 將原始 starter source 建立一個 Git baseline commit（不提交 `bin/` 或 `.DS_Store`）。
-- [ ] 確認 JUnit 版本、jar 檔位置，以及本機執行測試的命令。
-- [ ] 建立/確認 `.gitignore`，排除 `bin/`、`.class`、`.DS_Store`。
+- [x] 將原始 starter source 建立一個 Git baseline commit（不提交 `bin/` 或 `.DS_Store`）。
+- [x] 確認 JUnit 版本、jar 檔位置，以及本機執行測試的命令。
+- [x] 建立/確認 `.gitignore`，排除 `bin/`、`.class`、`.DS_Store`。
 
 ## 1. Milestone 1：可執行程式與第一個測試
 
-- [ ] 將 `BigNumTest.java` 改成可編譯的 JUnit test class（目前已有草稿，但需確認 class、imports 與 `@Test` 位置正確）。
-- [ ] 寫一個最小通過測試，例如 `2 + 3 = 5`。
-- [ ] 在本機或 Web-CAT 成功執行至少一個測試。
-- [ ] 記錄測試命令與成功輸出。
+- [x] 將 `BigNumTest.java` 改成可編譯的 JUnit test class（目前已有草稿，但需確認 class、imports 與 `@Test` 位置正確）。
+- [x] 寫一個最小通過測試，例如 `2 + 3 = 5`。
+- [x] 在本機或 Web-CAT 成功執行至少一個測試。
+- [x] 記錄測試命令與成功輸出。
 
 ## 2. Part A：找出、修復並記錄六個 seeded defects
 
 每個 defect 都必須完成：最小失敗輸入／單元測試、可觀察症狀、根因（檔案、方法、違反的 invariant 或演算法性質）、修正理由、回歸測試名稱。
 
 - [ ] 建立 `DEFECTS.md`，由 `DEFECTS_template.md` 複製格式開始。
-- [ ] Defect 1：Exponentiation control flow。
-- [ ] Defect 2：Linked list equality。
-- [ ] Defect 3：List truncation 後的 `size` invariant。
-- [ ] Defect 4：Stack top access (`peek`)。
-- [ ] Defect 5：Input tokenization。
-- [ ] Defect 6：迴圈內 list operation 的 asymptotic cost。
+- [ ] Defect 1：Exponentiation control flow -> 用 recursion 實作 exponentiation
+- [ ] Defect 2：Linked list equality -> 2 list 的相等檢查
+- [ ] Defect 3：List truncation 後的 `size` invariant -> node 數量要等於 list 長度
+- [ ] Defect 4：Stack top access (`peek`) -> 只能回傳 top 不能 pop
+- [ ] Defect 5：Input tokenization -> postfix 的讀取
+- [ ] Defect 6：迴圈內 list operation 的 asymptotic cost -> linkedlist 的讀取
 - [ ] 為以上每個 defect 建立一個「修正前失敗、修正後通過」的 regression test。
 - [ ] 先完成任三個 defect 的完整文件，交 Milestone 2。
 - [ ] 跑 sample input，確認修正後沒有破壞原有輸出。

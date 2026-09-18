@@ -5,25 +5,41 @@ import org.junit.Test;
 
 public class BigNumTest {
     @Test
-    public void testBigNumNoZeroLeading() {
-        BigNum number = new BigNum("001");
-        assertEquals("1", number.toString());
+    public void testLinkedListAddOperationCount(){
+        LinkedList<Integer> list = new LinkedList<>();
+        OpCounter.reset();
+        list.add(1);
+        list.add(2);
+        list.add(3);
+        assertEquals(0L, OpCounter.getTraversals());
     }
     @Test
-    public void testLinkedListEqual() {
-        LinkedList<Integer> list1 = new LinkedList<Integer>();
-        LinkedList<Integer> list2 = new LinkedList<Integer>();
+    public void testLinkedListSizeTruncateAfter(){
+        LinkedList<Integer> list = new LinkedList<>();
+        list.add(1);
+        list.add(2);
+        list.add(3);
+        list.truncateAfter(list.getHead());
+        assertEquals(1, list.getSize());
+    }
+    @Test
+    public void testLinkedListTruncateAfterOperationCount(){
+        LinkedList<Integer> list = new LinkedList<>();
+        list.add(1);
+        list.add(2);
+        list.add(3);
+        OpCounter.reset();
+        list.truncateAfter(list.getHead());
+        assertEquals(0L, OpCounter.getTraversals());
+    }
 
-        for (int i=1; i<10; i++) {
-            list1.add(i);
-        };
-        for (int i=1; i<10; i++) {
-            list2.add(i);
-        };
-
-        assertTrue(
-            "Two linked list should be the same,",
-            list1.equals(list2)
-        );
+    @Test
+    public void testTwoLinkedListEqual(){
+        LinkedList<Integer> list_1 = new LinkedList<>();
+        list_1.add(1);
+        LinkedList<Integer> list_2 = new LinkedList<>();
+        list_2.add(1);
+        list_2.add(2);
+        assertFalse(list_1.equals(list_2));
     }
 }
