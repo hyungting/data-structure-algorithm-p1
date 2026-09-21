@@ -28,15 +28,15 @@
 
 每個 defect 都必須完成：最小失敗輸入／單元測試、可觀察症狀、根因（檔案、方法、違反的 invariant 或演算法性質）、修正理由、回歸測試名稱。
 
-- [ ] 建立 `DEFECTS.md`，由 `DEFECTS_template.md` 複製格式開始。
-- [ ] Defect 1：Exponentiation control flow -> 用 recursion 實作 exponentiation
-- [ ] Defect 2：Linked list equality -> 2 list 的相等檢查
-- [ ] Defect 3：List truncation 後的 `size` invariant -> node 數量要等於 list 長度
-- [ ] Defect 4：Stack top access (`peek`) -> 只能回傳 top 不能 pop
-- [ ] Defect 5：Input tokenization -> postfix 的讀取
-- [ ] Defect 6：迴圈內 list operation 的 asymptotic cost -> linkedlist 的讀取
+- [x] 建立 `DEFECTS.md`，由 `DEFECTS_template.md` 複製格式開始。
+- [x] Defect 1：Exponentiation control flow
+- [x] Defect 2：Linked list equality
+- [x] Defect 3：List truncation 後的 `size` invariant
+- [x] Defect 4：Stack top access (`peek`)
+- [x] Defect 5：Input tokenization
+- [x] Defect 6：迴圈內 list operation 的 asymptotic cost
 - [ ] 為以上每個 defect 建立一個「修正前失敗、修正後通過」的 regression test。
-- [ ] 先完成任三個 defect 的完整文件，交 Milestone 2。
+- [x] 先完成任三個 defect 的完整文件，交 Milestone 2。
 - [ ] 跑 sample input，確認修正後沒有破壞原有輸出。
 
 ## 3. Part B：Adversarial JUnit Test Suite

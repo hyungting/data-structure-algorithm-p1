@@ -42,4 +42,25 @@ public class BigNumTest {
         list_2.add(2);
         assertFalse(list_1.equals(list_2));
     }
+
+    @Test
+    public void testBigNumEvenExponent() {
+        BigNum num = new BigNum("2");
+        BigNum result = num.exponentiate(4);
+        assertEquals("16", result.toString());
+    }
+
+    @Test
+    public void testStackPeek() {
+        Stack<Integer> stack = new Stack<>();
+        stack.push(1);
+        stack.push(2);
+        assertEquals("2", stack.peek().toString());
+    }
+
+    @Test
+    public void testBigNumParseTab() {
+        BigNumExpression exp = new BigNumExpression("1\t2\t+");
+        assertEquals("3", exp.parseExpression().toString());
+    }
 }

@@ -115,3 +115,108 @@ If their sizes differ, equals will return false immediately, avoiding an unneces
 **Regression test.** `testTwoLinkedListEqual`
 
 ---
+
+## Defect 4: `BigNum.exponentiateHelper`'s even exponent branch produce an incorrect result
+
+**Category:** exponentiation control flow
+
+**Symptom.**
+Exponentiation returns an incorrect value when an even exponent greater than two is used.
+For example, the program calculates `2^4` as `8` instead of `16`.
+
+**Minimal failing input.**
+- input: Create `BigNum` with base = 2, then call `exponentiate` with exponent.
+- actual: "8"
+- expected: "16"
+
+The test must use an even exponent of at least four because exponent two happens to produce the correct result even with the defect.
+At exponent four, `res` and `base` differ, making the error observable.
+
+**Root cause.**
+- File: `BigNum.java`
+- Method: `BigNum.exponentiateHelper`
+- Line: `225-228`
+
+The even-exponent branch should return `res * res`, but it returns `res * base`.
+Here, `res` is `base^(exponent / 2)`.
+The current code therefore calculates `base^(exponent / 2 + 1)` instead of `base^exponent`.
+For exponents greater than two, it reduces the resulting exponent by `exponent / 2 - 1`.
+
+**Fix.**
+I changed the even-exponent branch to return `res * res`.
+This implements the exponentiation-by-squaring rule for an even exponent.
+
+**Regression test.** `testBigNumEvenExponent`
+
+---
+
+## Defect 5: `Stack.peek` returns the bottom element instead of the top
+
+**Category:** access to the top of the stack
+
+**Symptom.**
+`peek()` is meant to get the last pushed element.
+Instead, it returns the element that was pushed first.
+
+**Minimal failing input.**
+- input: Create `Stack` with `1, 2` pushed accordingly, then call `peek()`.
+- actual: "1"
+- expected: "2"
+
+Two pushed elements are minimal because the head and tail refer to the same node and the defect is not observable with only one element .
+
+**Root cause.**
+- File: `Stack.java`
+- Method: `Stack.peek`
+- Line: `48-54`
+
+In `Stack`, `push()` adds each element to the head of the linked list.
+Therefore, the top of the stack is stored at index `0`. 
+However, `peek()` uses `getSize() - 1`, which retrieves the bottom of the stack.
+This violates the stack's LIFO ordering invariant.
+
+**Fix.**
+I will let `peek()` to return the data from `getHead()`.
+I chose this fix because `getHead()` directly represents the top of the stack. 
+Using `getItemAt(0)` can also work, but `getHead()` is simpler, 
+makes the representation invariant explicit, and avoids an unnecessary indexed-list access.
+
+**Regression test.** `testStackPeek`
+
+---
+
+## Defect 6: Tab-separated tokenization are not parsed correctly
+
+**Category:** input tokenization
+
+**Symptom.**
+A valid RPN expression whose tokens are separated by tab characters is not tokenized into separate operands and operators.
+Instead, the expression is treated as one malformed operand and produces an incorrect result.
+
+**Minimal failing input.**
+- input: `1\t2\t+`
+- actual: `11-21-1-`
+- expected: `3`
+
+A valid binary RPN expression requires two operands and one operator, so it must contain three tokens and two separators.
+This is the shortest expression in that family that uses tabs as token separators.
+
+**Root cause.**
+
+- File: `BigNumExpression.java`
+- Method: `BigNumExpression`
+- Line: 19
+
+The constructor uses one or more ordinary space characters to separate expression.
+It does not match a tab character, so tab-separated tokens are not split before RPN evaluation.
+The parser then receives one malformed token instead of the three tokens `2`, `3`, and `+`.
+
+**Fix.**
+I will include tab as identifier of separating expression using the regular expression `\\s+`.
+It matches one or more whitespace characters, including ordinary spaces and tabs.
+I chose it over `" +"` because it retains support for multiple spaces while also correctly handling other valid whitespace separators.
+
+**Regression test.** `testBigNumParseTab`
+
+
+
