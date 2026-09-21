@@ -214,7 +214,7 @@ public class LinkedList<T> {
         return this.size;
     }
 
-    /** TODO: add length comparison first*/
+
     @Override
     public boolean equals(Object other) {
         if (other == null) {
@@ -225,7 +225,12 @@ public class LinkedList<T> {
             return false;
         }
 
-        LinkedNode<?> otherCurrent = ((LinkedList<?>)other).getHead();
+        LinkedList<?> otherList = (LinkedList<?>)other;
+        if (this.size != otherList.size) {
+            return false;
+        }
+
+        LinkedNode<?> otherCurrent = otherList.getHead();
         LinkedNode<T> thisCurrent = this.head;
         while (otherCurrent != null && thisCurrent != null) {
             if (!thisCurrent.equals(otherCurrent)) {
