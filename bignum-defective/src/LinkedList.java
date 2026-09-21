@@ -16,7 +16,7 @@ public class LinkedList<T> {
     private LinkedNode<T> tail;
     private int size;
 
-    /** Good
+    /**
      * Create an empty list.
      */
     public LinkedList() {
@@ -24,7 +24,7 @@ public class LinkedList<T> {
     }
 
 
-    /** Good
+    /**
      * Create a list whose only node is the one given.
      *
      * @param head
@@ -37,7 +37,7 @@ public class LinkedList<T> {
     }
 
 
-    /** Good
+    /**
      * @return the first node of the list, or null if empty
      */
     public LinkedNode<T> getHead() {
@@ -45,7 +45,7 @@ public class LinkedList<T> {
     }
 
 
-    /** Good
+    /**
      * @return the last node of the list, or null if empty
      */
     public LinkedNode<T> getTail() {
@@ -53,7 +53,7 @@ public class LinkedList<T> {
     }
 
 
-    /** TODO: add on tail directly, don't start with head.
+    /**
      * Append a node to the end of the list.
      *
      * @param node
@@ -64,13 +64,7 @@ public class LinkedList<T> {
             this.head = node;
         }
         else {
-            LinkedNode<T> current = this.head;
-            while (current.getNext() != null) {
-                current = current.getNext();
-                OpCounter.traverse();
-            }
-
-            current.setNext(node);
+            this.tail.setNext(node);
         }
 
         this.tail = node;
@@ -89,7 +83,7 @@ public class LinkedList<T> {
     }
 
 
-    /** Good
+    /**
      * Insert a value at the front of the list.
      *
      * @param el
@@ -150,7 +144,7 @@ public class LinkedList<T> {
     }
 
 
-    /** Good
+    /**
      * Remove the node at the given index.
      *
      * @param index
@@ -190,7 +184,7 @@ public class LinkedList<T> {
     }
 
 
-    /** Good
+    /**
      * @param index
      *            zero-based position of the node to fetch
      * @return the node at that position
@@ -213,7 +207,7 @@ public class LinkedList<T> {
     }
 
 
-    /** Good
+    /**
      * @return the number of nodes in the list
      */
     public int getSize() {
