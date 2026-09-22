@@ -308,6 +308,72 @@ public class BigNumTest {
     }
 
     @Test
+    public void testLinkedListRemoveFirstFromEmpty() {
+        LinkedList<Integer> list = new LinkedList<>();
+        assertEquals(null, list.removeFirst());
+        assertEquals(null, list.getHead());
+        assertEquals(null, list.getTail());
+        assertEquals(0, list.getSize());
+    }
+
+    @Test
+    public void testLinkedListRemoveMaintainsInvariants() {
+        LinkedList<Integer> list = new LinkedList<>();
+        list.add(1);
+        list.add(2);
+        list.add(3);
+
+        LinkedNode<Integer> removedMiddle = list.remove(1);
+        assertEquals(Integer.valueOf(2), removedMiddle.getData());
+        assertEquals(null, removedMiddle.getNext());
+        assertEquals("13", list.toString());
+        assertEquals(Integer.valueOf(1), list.getHead().getData());
+        assertEquals(Integer.valueOf(3), list.getTail().getData());
+        assertEquals(2, list.getSize());
+
+        LinkedNode<Integer> removedTail = list.remove(1);
+        assertEquals(Integer.valueOf(3), removedTail.getData());
+        assertEquals(null, removedTail.getNext());
+        assertEquals(Integer.valueOf(1), list.getHead().getData());
+        assertEquals(Integer.valueOf(1), list.getTail().getData());
+        assertEquals(null, list.getTail().getNext());
+        assertEquals(1, list.getSize());
+
+        LinkedNode<Integer> removedHead = list.remove(0);
+        assertEquals(Integer.valueOf(1), removedHead.getData());
+        assertEquals(null, list.getHead());
+        assertEquals(null, list.getTail());
+        assertEquals(0, list.getSize());
+    }
+
+    @Test
+    public void testLinkedListTruncateAfterTailDoesNotChangeList() {
+        LinkedList<Integer> list = new LinkedList<>();
+        list.add(1);
+        list.add(2);
+        list.add(3);
+
+        list.truncateAfter(list.getTail());
+
+        assertEquals("123", list.toString());
+        assertEquals(Integer.valueOf(1), list.getHead().getData());
+        assertEquals(Integer.valueOf(3), list.getTail().getData());
+        assertEquals(null, list.getTail().getNext());
+        assertEquals(3, list.getSize());
+    }
+
+    @Test
+    public void testLinkedListEqualsRejectsLongerLeftList() {
+        LinkedList<Integer> longer = new LinkedList<>();
+        longer.add(1);
+        longer.add(2);
+        LinkedList<Integer> shorter = new LinkedList<>();
+        shorter.add(1);
+
+        assertFalse(longer.equals(shorter));
+    }
+
+    @Test
     public void testLinkedListGetItemAt() {
         LinkedList<Integer> list = new LinkedList<>();
         for (int i=0; i<10; i++) {
@@ -338,5 +404,31 @@ public class BigNumTest {
             list.add(i);
         }
         list.getItemAt(-1);
+    }
+
+    @Test
+    public void testStackEmptyOperations() {
+        Stack<Integer> stack = new Stack<>();
+        assertEquals(true, stack.isEmpty());
+        assertEquals(0, stack.getSize());
+        assertEquals(null, stack.peek());
+        assertEquals(null, stack.pop());
+    }
+
+    @Test
+    public void testStackPopUsesLifoAndPeekDoesNotRemove() {
+        Stack<Integer> stack = new Stack<>();
+        stack.push(1);
+        stack.push(2);
+        stack.push(3);
+
+        assertEquals(Integer.valueOf(3), stack.peek());
+        assertEquals(3, stack.getSize());
+        assertEquals(Integer.valueOf(3), stack.pop());
+        assertEquals(Integer.valueOf(2), stack.peek());
+        assertEquals(Integer.valueOf(2), stack.pop());
+        assertEquals(Integer.valueOf(1), stack.pop());
+        assertEquals(true, stack.isEmpty());
+        assertEquals(0, stack.getSize());
     }
 }
