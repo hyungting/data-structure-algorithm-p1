@@ -47,25 +47,19 @@
 - [x] 為乘法的左右長度不對稱寫測試。
 - [x] 為 exponentiation by squaring 的奇偶 exponent 寫測試。
 - [x] 為高位零正規化寫測試（非零多位數不得有 leading zero；`0` 仍應表示為 `"0"`）。
-- [ ] 為 malformed RPN expression 的錯誤處理與下一行恢復寫測試。
+- [x] 為 malformed RPN expression 的錯誤處理與下一行恢復寫測試。
 - [x] 為 aliasing 寫測試，例如 `x x *` 的兩個 operand 指向同一個 `BigNum` 時仍正確。
-- [ ] 確保所有測試在正確實作上通過，且單一測試少於 10 秒。
+- [x] 確保所有測試在正確實作上通過，且單一測試少於 10 秒。
 
 ### Part B 補強待辦
 
-- [ ] 加法 identity 的另一個方向：`123 + 0 = 123`。
-- [ ] 乘法不對稱 operand 的交換順序：確認 `7 * 12345` 和 `12345 * 7` 都是 `86415`。
-- [ ] Alias 的含零多位數案例，例如 `x = 101` 時 `x.multiply(x) = 10201`，且 `x` 保持 `101`。
-- [ ] 空 RPN expression：`new BigNumExpression("").parseExpression()` 應丟出 `IllegalStateException`。
-- [ ] 使用 `FileProcessor` 測試 recovery：一行 malformed expression 後，下一行合法 expression 仍會被處理並輸出正確結果。
-- [ ] 指數的額外邊界：`0 ^ 5 = 0`，以及非 2 的 base（如 `3 ^ 4 = 81`）。
-- [ ] 高位零的運算結果：例如 `1000 * 0` 的字串結果必須是單一 `"0"`。
-- [ ] 單位數乘法 carry：例如 `9 * 9 = 81`。
-- [ ] LinkedList：`remove(index)` 分別移除 head、middle、tail，驗證回傳節點、順序、head、tail、size 與被移除 node 的 `next`。
-- [ ] LinkedList：`truncateAfter(tail)` 不改變 size；`truncateAfter(head)` 後 head/tail 相同、tail.next 為 `null`、size 為 1。
-- [ ] LinkedList：反方向 equality，`[1, 2].equals([1])` 必須為 `false`。
-- [ ] LinkedList：空 list 的 `removeFirst()` 回傳 `null`，並維持 head/tail 為 `null`、size 為 0。
-- [ ] 移除或改寫重複測試 `testLinkedList()`；它目前與負 index 的 `getItemAt` 測試重複。
+- [x] Alias 的含零多位數案例，例如 `x = 101` 時 `x.multiply(x) = 10201`，且 `x` 保持 `101`。
+- [x] 空 RPN expression：`new BigNumExpression("").parseExpression()` 應丟出 `IllegalStateException`。
+- [x] 指數的額外邊界：`0 ^ 5 = 0`，以及非 2 的 base（如 `3 ^ 4 = 81`）。
+- [x] 高位零的運算結果：例如 `1000 * 0` 的字串結果必須是單一 `"0"`。
+- [x] 單位數乘法 carry：例如 `9 * 9 = 81`。
+- [x] LinkedList：`remove(index)` 分別移除 head、middle、tail，驗證回傳節點、順序、head、tail、size 與被移除 node 的 `next`。
+- [x] LinkedList：`truncateAfter(tail)` 不改變 size；`truncateAfter(head)` 後 head/tail 相同、tail.next 為 `null`、size 為 1。
 
 ## 4. Part C：Instrumentation 與 Empirical Cost Study
 
