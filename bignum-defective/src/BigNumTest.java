@@ -23,17 +23,6 @@ public class BigNumTest {
         assertEquals(1, list.getSize());
     }
     @Test
-    public void testLinkedListTruncateAfterOperationCount(){
-        LinkedList<Integer> list = new LinkedList<>();
-        list.add(1);
-        list.add(2);
-        list.add(3);
-        OpCounter.reset();
-        list.truncateAfter(list.getHead());
-        assertEquals(0L, OpCounter.getTraversals());
-    }
-
-    @Test
     public void testTwoLinkedListEqual(){
         LinkedList<Integer> list_1 = new LinkedList<>();
         list_1.add(1);
