@@ -63,13 +63,13 @@
 
 ## 4. Part C：Instrumentation 與 Empirical Cost Study
 
-- [ ] 在 `LinkedNode` 的 node allocation 處呼叫 `OpCounter.nodeAlloc()`。
-- [ ] 在加法的每個 digit position 呼叫 `OpCounter.digitAdd()`。
-- [ ] 在乘法內層的每次單位數乘法呼叫 `OpCounter.digitMul()`；定義並一致實施 carry addition 的計數規則。
-- [ ] 在每次真的沿 linked list 前進一個 node 時呼叫 `OpCounter.traverse()`。
-- [ ] 在 `BigNumArithmetic` 支援 `--count`，並使用 `OpCounter.reset()` 與 `OpCounter.report()`。
-- [ ] 用小型輸入手算/檢查 counter，驗證計數不是事後估計。
-- [ ] 先修正 list append 的效率問題，再進行大型測量。
+- [x] 在 `LinkedNode` 的 node allocation 處呼叫 `OpCounter.nodeAlloc()`。
+- [x] 在加法的每個 digit position 呼叫 `OpCounter.digitAdd()`。
+- [x] 在乘法內層的每次單位數乘法呼叫 `OpCounter.digitMul()`；定義並一致實施 carry addition 的計數規則。
+- [x] 在每次真的沿 linked list 前進一個 node 時呼叫 `OpCounter.traverse()`。
+- [x] 在 `BigNumArithmetic` 支援 `--count`，並使用 `OpCounter.reset()` 與 `OpCounter.report()`。
+- [x] 用小型輸入手算/檢查 counter，驗證計數不是事後估計。
+- [x] 先修正 list append 的效率問題，再進行大型測量。
 - [ ] 以 25、100、400、1600、3000 digits 的 operands 進行測量；每種五次。
 - [ ] 以 exponent 2^1 到 2^12 進行測量；每種五次。
 - [ ] 建立 `measurements.csv`，包含輸入規模、trial、counter 值與 wall-clock time。
