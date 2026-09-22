@@ -46,7 +46,7 @@ Traversing from the head was rejected because it unnecessarily makes repeated ap
 ---
 
 
-## Defect 2: `LinkedList.truncateAfter` leaves size inconsistent and performs an unnecessary traversal
+## Defect 2: `LinkedList.truncateAfter` leaves size inconsistent
 
 **Category:** the size invariant after a list is truncated
 
@@ -69,17 +69,12 @@ Therefore, its size remains correct.
 
 The violated class invariant is that size must equal the number of nodes reachable from head.
 The method disconnects the nodes after the specified node but does not update size to reflect the nodes that were removed.
-In addition, the method traverses nodes even though the traversal is unnecessary for performing the truncation.
-Once the truncation point is known, the list can be ended by updating the relevant links and tail reference directly.
-The extra loop makes the operation linear rather than constant time.
 
 **Fix.**
 I will add size update operation in `truncateAfter` so that the size equals the number of remaining nodes.
-I also removed the redundant traversal because it has nothing to do with truncation.
 
 **Regression test.** 
 `testLinkedListSizeTruncateAfter` -> verifies size consistency after truncation.
-`testLinkedListTruncateAfterOperationCount` -> verifies that truncation does not perform an unnecessary traversal.
 
 ---
 

@@ -133,14 +133,16 @@ public class LinkedList<T> {
             return;
         }
 
+        int removedSize = 0;
         LinkedNode<T> current = node.getNext();
         while (current != null) {
+            removedSize++;
             current = current.getNext();
-            OpCounter.traverse();
         }
-
         node.setNext(null);
         this.tail = node;
+        this.size -= removedSize;
+
     }
 
 
