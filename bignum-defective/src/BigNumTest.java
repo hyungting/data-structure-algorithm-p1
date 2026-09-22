@@ -52,7 +52,7 @@ public class BigNumTest {
         assertEquals("3", exp.parseExpression().toString());
     }
 
-    /** Part B */
+    /** Part B — high-order zero normalization. */
     @Test
     public void testNoLeadingZero() {
         BigNum a = new BigNum("000001");
@@ -65,6 +65,7 @@ public class BigNumTest {
         assertEquals("0", a.toString());
     }
 
+    /** Part B — carry propagation and carry-out when a result grows in length. */
     @Test
     public void testBigNumAddCarry() {
         BigNum a = new BigNum("99999");
@@ -89,6 +90,7 @@ public class BigNumTest {
         assertEquals("10", res.toString());
     }
 
+    /** Part B — zero and identity operands. */
     @Test
     public void testBigNumAddZero(){
         BigNum a = new BigNum("0");
@@ -103,14 +105,6 @@ public class BigNumTest {
         BigNum b = new BigNum("0");
         BigNum res = a.add(b);
         assertEquals("0", res.toString());
-    }
-
-    @Test
-    public void testBigNumAddAlias(){
-        BigNum a = new BigNum("9");
-        BigNum res = a.add(a);
-        assertEquals("18", res.toString());
-        assertEquals("9", a.toString());
     }
 
     @Test
@@ -137,6 +131,7 @@ public class BigNumTest {
         assertEquals("100", res.toString());
     }
 
+    /** Part B — single-digit versus multi-digit boundary cases. */
     @Test
     public void testBigNumMultiplyTwoMultiDigits(){
         BigNum a = new BigNum("17");
@@ -145,6 +140,7 @@ public class BigNumTest {
         assertEquals("289", res.toString());
     }
 
+    /** Part B — operand length asymmetry in multiplication. */
     @Test
     public void testBigNumMultiplyLargeMultiDigits(){
         BigNum a = new BigNum("123456789");
@@ -161,14 +157,7 @@ public class BigNumTest {
         assertEquals("15241578750190521", res.toString());
     }
 
-    @Test
-    public void testbBigNumMultiplyWithAliasedOperands() {
-        BigNum x = new BigNum("12");
-        BigNum result = x.multiply(x);
-        assertEquals("144", result.toString());
-        assertEquals("12", x.toString());
-    }
-
+    /** Part B — exponent parity in exponentiation by squaring. */
     @Test
     public void testBigNumExponentiateZero(){
         BigNum a = new BigNum("1000");
@@ -186,6 +175,14 @@ public class BigNumTest {
     }
 
     @Test
+    public void testBigNumExponentiateBaseZero(){
+        BigNum a = new BigNum("0");
+        int e = 5;
+        BigNum res = a.exponentiate(e);
+        assertEquals("0", res.toString());
+    }
+
+    @Test
     public void testBigNumExponentiateEven(){
         BigNum a = new BigNum("2");
         int e = 10;
@@ -195,12 +192,30 @@ public class BigNumTest {
 
     @Test
     public void testBigNumExponentiateOdd(){
-        BigNum a = new BigNum("2");
+        BigNum a = new BigNum("3");
         int e = 5;
         BigNum res = a.exponentiate(e);
-        assertEquals("32", res.toString());
+        assertEquals("243", res.toString());
     }
 
+    /** Part B — aliasing between operands. */
+    @Test
+    public void testBigNumAddAlias(){
+        BigNum a = new BigNum("9");
+        BigNum res = a.add(a);
+        assertEquals("18", res.toString());
+        assertEquals("9", a.toString());
+    }
+
+    @Test
+    public void testBigNumMultiplyWithAliasedOperands() {
+        BigNum x = new BigNum("101");
+        BigNum result = x.multiply(x);
+        assertEquals("10201", result.toString());
+        assertEquals("101", x.toString());
+    }
+
+    /** Part B — malformed expression recovery (parse errors). */
     @Test(expected = IllegalStateException.class)
     public void testRejectsLeftoverOperands() {
         BigNumExpression exp = new BigNumExpression("2 3");
@@ -209,13 +224,25 @@ public class BigNumTest {
 
     @Test(expected = IllegalStateException.class)
     public void testRejectsLeftoverOperators() {
-        BigNumExpression exp = new BigNumExpression("2 3 + + +");
+        BigNumExpression exp = new BigNumExpression("2 3 + + ");
         exp.parseExpression();
     }
 
     @Test(expected = IllegalStateException.class)
     public void testRejectsIllegalOperators() {
         BigNumExpression exp = new BigNumExpression("2 3 /");
+        exp.parseExpression();
+    }
+
+    @Test(expected = IllegalStateException.class)
+    public void testRejectsEmptyExpression() {
+        BigNumExpression exp = new BigNumExpression("");
+        exp.parseExpression();
+    }
+
+    @Test(expected = IllegalStateException.class)
+    public void testRejectsEmptyOperands() {
+        BigNumExpression exp = new BigNumExpression("+");
         exp.parseExpression();
     }
 
@@ -306,15 +333,6 @@ public class BigNumTest {
 
     @Test(expected = IllegalArgumentException.class)
     public void testLinkedListGetItemAtRejectNegativeIndex() {
-        LinkedList<Integer> list = new LinkedList<>();
-        for (int i=0; i<10; i++) {
-            list.add(i);
-        }
-        list.getItemAt(-1);
-    }
-
-    @Test(expected = IllegalArgumentException.class)
-    public void testLinkedList() {
         LinkedList<Integer> list = new LinkedList<>();
         for (int i=0; i<10; i++) {
             list.add(i);
