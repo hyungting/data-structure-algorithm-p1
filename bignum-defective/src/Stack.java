@@ -40,7 +40,7 @@ public class Stack<T> {
     }
 
 
-    /** TODO: get index = 0, not size - 1
+    /**
      * Return the top element without removing it.
      *
      * @return the top element, or null if the stack is empty
@@ -50,7 +50,7 @@ public class Stack<T> {
             return null;
         }
 
-        return this.elements.getItemAt(this.getSize() - 1).getData();
+        return this.elements.getHead().getData();
     }
 
 
