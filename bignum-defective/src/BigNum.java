@@ -9,7 +9,7 @@ public class BigNum {
 
     private LinkedList<Integer> listRep;
 
-    /** Good
+    /**
      * Create a new BigNum from the given String representation.
      *
      * @param stringRep
@@ -21,7 +21,7 @@ public class BigNum {
     }
 
 
-    /** Good
+    /**
      * Create a new BigNum that takes ownership of the given digit list.
      *
      * @param listRep
@@ -33,7 +33,7 @@ public class BigNum {
     }
 
 
-    /** Good but trigger LinkedList.add defect
+    /**
      * Utility method that takes a String and converts it into LinkedList
      * representation. Digits are stored in reverse order, i.e., the lowest
      * order digit is the head.
@@ -58,7 +58,7 @@ public class BigNum {
     }
 
 
-    /** Good but trigger LinkedList.truncateAfter defect
+    /**
      * Remove the high order zero digits from this number, leaving a single
      * zero digit if the number is zero.
      */
@@ -82,7 +82,7 @@ public class BigNum {
     }
 
 
-    /** Good
+    /**
      * @return the digit list backing this number, lowest order digit first
      */
     public LinkedList<Integer> getListRep() {
@@ -96,7 +96,7 @@ public class BigNum {
     }
 
 
-    /** Good
+    /**
      * Add the specified BigNum to this BigNum.
      *
      * @param other
@@ -201,7 +201,7 @@ public class BigNum {
     }
 
 
-    /** TODO: returns when (exponent % 2 == 0) is wrong
+    /**
      * Raise this BigNum to the given power using exponentiation by squaring.
      *
      * @param exponent
@@ -224,7 +224,7 @@ public class BigNum {
 
         if (exponent % 2 == 0) {
             BigNum res = exponentiateHelper(base, exponent / 2);
-            return res.multiply(base);
+            return res.multiply(res);
         }
         else {
             BigNum res = exponentiateHelper(base, (exponent - 1) / 2);
