@@ -122,7 +122,7 @@ public class LinkedList<T> {
     }
 
 
-    /** TODO: remove while loop, add size adjustment
+    /**
      * Discard every node after the given node, which must belong to this list.
      *
      * @param node

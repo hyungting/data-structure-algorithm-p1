@@ -18,8 +18,8 @@ The slowdown becomes increasingly visible as more elements are added.
 
 **Minimal failing input.**
 - input: Create an empty LinkedList<Integer> and append 1, 2, and 3.
-- actual: Appending the third element walks from head to tail. Repeated appends therefore accumulate a quadratic number of traversals.
-- expected: Because the list maintains a tail pointer, each append should use that pointer  directly and take O(1) time.
+- actual: 1 (traversals).
+- expected: 0 (traversals).
 
 With only one element, no existing link must be followed.
 When appending the second element, the head is also the tail, so no link traversal occurs.
@@ -32,14 +32,14 @@ Therefore, three appended elements are required to expose the defect.
 
 The `LinkedList.add` method can run in O(1) time by appending the new node directly to the tail.
 However, the method appends a new node by traversing the list from the head instead.
-Each append takes K operations when the list length is K.
-When N elements are added to an initially empty LinkedList, the total number of traversed nodes is N(N − 1)/2.
+Appending to a list of length K takes O(K) time because the method traverses from the head to the tail.
+When N elements are added to an initially empty LinkedList, the total number of pointer hops is (N−1)(N-2)/2.
 Therefore, repeatedly calling add to build a list of length N takes O(N^2) time.
 
 **Fix.**
-I will add new node directly to the current tail and then update the tail reference in `add` method.
-This provides O(1) append operations without changing the list’s data structure.
-Traversing from the head was rejected because it unnecessarily makes repeated append operations quadratic.
+I changed `add` to link the new node directly after `tail` and then update `tail` to the new node.
+This preserves the list contents and makes each append an O(1) operation.
+I rejected traversal from `head` because repeated appends would make building an N-node list O(N^2).
 
 **Regression test.** `testLinkedListAddOperationCount`
 
@@ -51,30 +51,33 @@ Traversing from the head was rejected because it unnecessarily makes repeated ap
 **Category:** the size invariant after a list is truncated
 
 **Symptom.**
-After truncation, the list contains fewer elements than the value reported by size.
-For example, after truncating a two-element list after its head, only the head remains reachable, but size still reports two elements.
+After truncation, the list contains fewer elements than the value returned by `getSize()`.
+For example, after truncating a two-element list after its head, only the head remains reachable, but `getSize()` still returns two.
 
 **Minimal failing input.**
 - input: Create an empty `LinkedList<Integer>`, append 1 and 2, then call `truncateAfter(head)`.
-- actual: The list contains only 1, but `size()` returns 2.
-- expected: The list contains only 1, and `size()` returns 1.
+- actual: 2.
+- expected: 1.
 
-A one-element list cannot expose this defect because truncating after its head removes no elements.
-Therefore, its size remains correct.
+A one-element list cannot expose this defect because truncating after its head removes no nodes.
+Therefore, two elements are minimal.
 
 **Root cause.**
 - File: `LinkedList.java`
 - Method: `LinkedList.truncateAfter`
 - Line: `142-145`
 
-The violated class invariant is that size must equal the number of nodes reachable from head.
-The method disconnects the nodes after the specified node but does not update size to reflect the nodes that were removed.
+The class invariant requires `size` to equal the number of nodes reachable from `head`.
+The method disconnects the nodes after the specified node and updates `tail`, but it does not decrease `size` for the disconnected nodes.
+As a result, the cached size no longer matches the reachable list length.
 
 **Fix.**
-I will add size update operation in `truncateAfter` so that the size equals the number of remaining nodes.
+I traverse the nodes after the specified node and count how many nodes will be removed.
+I subtract that count from `size`, disconnect the suffix, and update `tail` to the specified node.
+This traversal is necessary because `truncateAfter` receives an arbitrary node, not its index.
+The method must determine how many nodes are removed in order to preserve the size invariant.
 
-**Regression test.** 
-`testLinkedListSizeTruncateAfter` -> verifies size consistency after truncation.
+**Regression test.** `testLinkedListSizeTruncateAfter`
 
 ---
 
@@ -87,8 +90,7 @@ I will add size update operation in `truncateAfter` so that the size equals the 
 For example, an empty list is incorrectly considered equal to a list containing one element.
 
 **Minimal failing input.**
-
-- input: Create two empty `LinkedList<Integer>`, one append 1 and the other append 1 & 2, then call `equals`.
+- input: Create two `LinkedList<Integer>`, one append 1 and the other append 1 & 2, then call `equals`.
 - actual: `true`
 - expected: `false`
 
@@ -104,14 +106,14 @@ This method checks only whether the two lists share the same prefix when one lis
 It returns `true` without verifying that both lists end at the same time.
 
 **Fix.**
-I will compare the lists' sizes before comparing corresponding nodes.
+I compared the lists' sizes before comparing corresponding nodes.
 If their sizes differ, equals will return false immediately, avoiding an unnecessary O(N) node-by-node comparison.
 
 **Regression test.** `testTwoLinkedListEqual`
 
 ---
 
-## Defect 4: `BigNum.exponentiateHelper`'s even exponent branch produce an incorrect result
+## Defect 4: `BigNum.exponentiateHelper`'s even exponent branch produces an incorrect result
 
 **Category:** exponentiation control flow
 
@@ -120,9 +122,9 @@ Exponentiation returns an incorrect value when an even exponent greater than two
 For example, the program calculates `2^4` as `8` instead of `16`.
 
 **Minimal failing input.**
-- input: Create `BigNum` with base = 2, then call `exponentiate` with exponent.
-- actual: "8"
-- expected: "16"
+- input: Create `BigNum` with base = 2, then call `exponentiate` with exponent = 4.
+- actual: 8
+- expected: 16
 
 The test must use an even exponent of at least four because exponent two happens to produce the correct result even with the defect.
 At exponent four, `res` and `base` differ, making the error observable.
@@ -171,16 +173,15 @@ However, `peek()` uses `getSize() - 1`, which retrieves the bottom of the stack.
 This violates the stack's LIFO ordering invariant.
 
 **Fix.**
-I will let `peek()` to return the data from `getHead()`.
-I chose this fix because `getHead()` directly represents the top of the stack. 
-Using `getItemAt(0)` can also work, but `getHead()` is simpler, 
-makes the representation invariant explicit, and avoids an unnecessary indexed-list access.
+I changed `peek()` to return the data from `getHead()`.
+I chose this fix because `getHead()` directly represents the top of the stack.
+Using `getItemAt(0)` can also work, but `getHead()` is simpler, makes the representation invariant explicit, and avoids an unnecessary indexed-list access.
 
 **Regression test.** `testStackPeek`
 
 ---
 
-## Defect 6: Tab-separated tokenization are not parsed correctly
+## Defect 6: Tab-separated tokens are not parsed correctly
 
 **Category:** input tokenization
 
@@ -207,7 +208,7 @@ It does not match a tab character, so tab-separated tokens are not split before 
 The parser then receives one malformed token instead of the three tokens `2`, `3`, and `+`.
 
 **Fix.**
-I will include tab as identifier of separating expression using the regular expression `\\s+`.
+I included tab as identifier of separating expression using the regular expression `\\s+`.
 It matches one or more whitespace characters, including ordinary spaces and tabs.
 I chose it over `" +"` because it retains support for multiple spaces while also correctly handling other valid whitespace separators.
 
