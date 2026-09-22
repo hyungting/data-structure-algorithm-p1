@@ -9,14 +9,14 @@ public class BigNumExpression {
     private String[] expression;
     private Stack<String> operandStack;
 
-    /** TODO: add tab
+    /**
      * Create an expression from one line of the input file.
      *
      * @param exp
      *            the raw line, already trimmed
      */
     public BigNumExpression(String exp) {
-        this.expression = exp.split(" +");
+        this.expression = exp.split("\\s+");
         this.operandStack = new Stack<String>();
     }
 
