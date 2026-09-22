@@ -21,6 +21,7 @@ public class LinkedNode<T> {
     public LinkedNode(T data, LinkedNode<T> next) {
         this.data = data;
         this.next = next;
+        OpCounter.nodeAlloc();
     }
 
 

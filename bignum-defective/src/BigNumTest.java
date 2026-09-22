@@ -431,4 +431,49 @@ public class BigNumTest {
         assertEquals(true, stack.isEmpty());
         assertEquals(0, stack.getSize());
     }
+
+    /** Part C */
+    @Test
+    public void testNodeAllocationCount() {
+        OpCounter.reset();
+
+        new LinkedNode<Integer>(1);
+
+        assertEquals(1L, OpCounter.getNodeAllocs());
+    }
+
+    @Test
+    public void testSingleDigitAdditionCount() {
+        BigNum a = new BigNum("5");
+        BigNum b = new BigNum("5");
+
+        OpCounter.reset();
+        a.add(b);
+
+        assertEquals(1L, OpCounter.getDigitAdds());
+    }
+
+    @Test
+    public void testSingleDigitMultiplicationCount() {
+        BigNum a = new BigNum("3");
+        BigNum b = new BigNum("4");
+
+        OpCounter.reset();
+        a.multiply(b);
+
+        assertEquals(1L, OpCounter.getDigitMuls());
+    }
+
+    @Test
+    public void testGetItemAtTraversalCount() {
+        LinkedList<Integer> list = new LinkedList<>();
+        list.add(0);
+        list.add(1);
+        list.add(2);
+
+        OpCounter.reset();
+        list.getItemAt(2);
+
+        assertEquals(2L, OpCounter.getTraversals());
+    }
 }

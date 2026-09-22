@@ -71,6 +71,7 @@ public class BigNum {
             }
 
             current = current.getNext();
+            OpCounter.traverse();
         }
 
         if (lastSeenNonZero != null) {
@@ -125,19 +126,26 @@ public class BigNum {
         else if (dig1 == null) {
             // The first number has run out of digits.
             int sum = dig2.getData() + carry;
+            OpCounter.digitAdd();
             result.add(sum % 10);
+            OpCounter.traverse();
             return this.addHelper(null, dig2.getNext(), sum / 10, result);
         }
         else if (dig2 == null) {
             // The second number has run out of digits.
             int sum = dig1.getData() + carry;
+            OpCounter.digitAdd();
             result.add(sum % 10);
+            OpCounter.traverse();
             return this.addHelper(dig1.getNext(), null, sum / 10, result);
         }
         else {
             // Both numbers still have digits to add.
             int sum = dig1.getData() + dig2.getData() + carry;
+            OpCounter.digitAdd();
             result.add(sum % 10);
+            OpCounter.traverse();
+            OpCounter.traverse();
             return this.addHelper(dig1.getNext(), dig2.getNext(), sum / 10,
                 result);
         }
@@ -175,6 +183,7 @@ public class BigNum {
 
             resultSoFar = resultSoFar.add(multiplyDigitWithNumber(dig1, dig2
                 .getData(), digitMultiplicationResult, 0));
+            OpCounter.traverse();
             return multiplyNumberWithNumber(dig1, dig2.getNext(), tens + 1,
                 resultSoFar);
         }
@@ -194,7 +203,10 @@ public class BigNum {
         }
         else {
             int product = dig1.getData() * dig2 + carry;
+            OpCounter.digitMul();
+            OpCounter.digitAdd();
             result.add(product % 10);
+            OpCounter.traverse();
             return multiplyDigitWithNumber(dig1.getNext(), dig2, result, product
                 / 10);
         }

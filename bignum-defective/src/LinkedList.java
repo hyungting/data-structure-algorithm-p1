@@ -112,6 +112,7 @@ public class LinkedList<T> {
 
         LinkedNode<T> removed = this.head;
         this.head = removed.getNext();
+        OpCounter.traverse();
         if (this.head == null) {
             this.tail = null;
         }
@@ -135,9 +136,11 @@ public class LinkedList<T> {
 
         int removedSize = 0;
         LinkedNode<T> current = node.getNext();
+        OpCounter.traverse();
         while (current != null) {
             removedSize++;
             current = current.getNext();
+            OpCounter.traverse();
         }
         node.setNext(null);
         this.tail = node;
@@ -167,13 +170,16 @@ public class LinkedList<T> {
             prev = current;
             current = current.getNext();
             i++;
+            OpCounter.traverse();
         }
 
         if (prev == null) {
             this.head = current.getNext();
+            OpCounter.traverse();
         }
         else {
             prev.setNext(current.getNext());
+            OpCounter.traverse();
         }
 
         if (current == this.tail) {
@@ -203,6 +209,7 @@ public class LinkedList<T> {
         while (i < index) {
             current = current.getNext();
             i++;
+            OpCounter.traverse();
         }
 
         return current;
@@ -240,7 +247,9 @@ public class LinkedList<T> {
             }
 
             otherCurrent = otherCurrent.getNext();
+            OpCounter.traverse();
             thisCurrent = thisCurrent.getNext();
+            OpCounter.traverse();
         }
 
         return true;
@@ -254,6 +263,7 @@ public class LinkedList<T> {
         while (current != null) {
             result = 31 * result + current.hashCode();
             current = current.getNext();
+            OpCounter.traverse();
         }
 
         return result;
@@ -267,6 +277,7 @@ public class LinkedList<T> {
         while (current != null) {
             rep.append(current.getData());
             current = current.getNext();
+            OpCounter.traverse();
         }
 
         return rep.toString();

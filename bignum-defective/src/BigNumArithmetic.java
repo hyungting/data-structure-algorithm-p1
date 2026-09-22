@@ -29,13 +29,39 @@ public class BigNumArithmetic {
      *            args[0] is the path to the input file
      */
     public static void main(String[] args) {
-        if (args.length != 1) {
+        boolean countMode = false;
+        String filePath;
+        if (args.length == 1) {
+            filePath = args[0];
+        }
+        else if (args.length == 2) {
+            if (args[0].equals("--count")) {
+                countMode = true;
+                filePath = args[1];
+            }
+            else if (args[1].equals("--count")) {
+                countMode = true;
+                filePath = args[0];
+            }
+            else {
+                throw new IllegalArgumentException(
+                    "Expected 2 arguments: --count and a file name.");
+            }
+        }
+        else {
             throw new IllegalArgumentException(
-                "Expected exactly 1 argument: a file name.");
+                "Expected 1 or 2 argument: a file name and whether to use --count mode.");
         }
 
-        String filePath = args[0];
+        if (countMode) {
+            OpCounter.reset();
+        }
+
         FileProcessor fp = new FileProcessor(filePath);
         fp.run();
+
+        if (countMode) {
+            OpCounter.report();
+        }
     }
 }
