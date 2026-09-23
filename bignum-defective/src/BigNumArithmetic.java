@@ -53,15 +53,7 @@ public class BigNumArithmetic {
                 "Expected 1 or 2 argument: a file name and whether to use --count mode.");
         }
 
-        if (countMode) {
-            OpCounter.reset();
-        }
-
         FileProcessor fp = new FileProcessor(filePath);
-        fp.run();
-
-        if (countMode) {
-            OpCounter.report();
-        }
+        fp.run(countMode);
     }
 }
