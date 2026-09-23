@@ -1,0 +1,2 @@
+2 16 ^ = 65536
+#OPCOUNT adds=37 muls=15 allocs=64 traversals=150

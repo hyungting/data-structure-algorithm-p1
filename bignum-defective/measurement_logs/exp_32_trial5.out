@@ -1,0 +1,2 @@
+2 32 ^ = 4294967296
+#OPCOUNT adds=102 muls=40 allocs=151 traversals=357
