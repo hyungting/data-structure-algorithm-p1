@@ -1,0 +1,2 @@
+2 8 ^ = 256
+#OPCOUNT adds=14 muls=6 allocs=31 traversals=71

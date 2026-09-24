@@ -1,0 +1,2 @@
+2 64 ^ = 18446744073709551616
+#OPCOUNT adds=355 muls=140 allocs=471 traversals=1115
